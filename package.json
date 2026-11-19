@@ -14,7 +14,14 @@
     "type": "git",
     "url": "https://github.com/Jiale077/gemini4-neon-scaling-pelican.git"
   },
-  "homepage": "https://github.com/Jiale077/gemini4-neon-scaling-pelican",
-  "keywords": ["gemini", "pelican", "scaling-law", "canvas", "threejs", "web-audio"],
+  "homepage": "https://jiale077.github.io/gemini4-neon-scaling-pelican/",
+  "keywords": [
+    "gemini",
+    "pelican",
+    "scaling-law",
+    "canvas",
+    "threejs",
+    "web-audio"
+  ],
   "license": "MIT"
 }

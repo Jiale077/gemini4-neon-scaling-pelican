@@ -4,7 +4,7 @@
 
 这是 [Jiale 的 AI 工坊](https://github.com/Jiale077) 使用 **Gemini 4 Neon** 制作的一次编程实测。这个仓库收录了视频《涌现之路》（The Scaling Law Ride）对应的网页项目：**100 秒动画、交互式调参实验台、程序合成音乐**，打开浏览器就能播放和探索。
 
-[观看视频](https://www.bilibili.com/video/BV1wssY6aERh/) · [关注我的 GitHub](https://github.com/Jiale077) · [MIT 许可证](./LICENSE)
+[在线体验](https://jiale077.github.io/gemini4-neon-scaling-pelican/) · [观看视频](https://www.bilibili.com/video/BV1wssY6aERh/) · [关注我的 GitHub](https://github.com/Jiale077) · [MIT 许可证](./LICENSE)
 
 ![从噪点、几何图形到 3D 鹈鹕的演化封面](./docs/assets/cover.png)
 
@@ -19,6 +19,10 @@
 - **代码生成画面与声音**：动画运行不加载外部图片、视频或录音；3D 部分通过 CDN 加载 Three.js。仓库封面仅作介绍，不参与动画渲染。
 
 ![项目实际运行画面：3D 海滨骑行](./docs/assets/preview.jpg)
+
+## 在线体验
+
+直接打开 **[在线播放器](https://jiale077.github.io/gemini4-neon-scaling-pelican/)**，点击播放即可体验完整动画。想研究或修改代码，再按下方步骤本地运行。
 
 ## 本地运行
 
