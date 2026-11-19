@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>《涌现之路》— 从 1M 到 1T 的 AI 鹈鹕骑车实测</title>
+  <link rel="stylesheet" href="./public/style.css" />
+</head>
+<body>
+  <div class="app">
+    <main class="viewport">
+      <div class="stage-wrap">
+        <iframe id="world3d-frame" src="./world3d.html?embed=1" title="1T+ 3D 写实世界" tabindex="-1"></iframe>
+        <canvas id="stage" width="1920" height="1080"></canvas>
+      </div>
+
+      <div id="overlay-play" class="overlay-play">
+        <div class="play-circle">▶</div>
+        <div class="overlay-hint">点击或按空格键播放 · 1:40 纯代码声画短片（2D 演进 → 3D 终极升维）</div>
+      </div>
+
+      <!-- Interactive Sandbox Parameter Lab with One-Click Showcase Presets -->
+      <aside id="lab-drawer" class="lab-drawer">
+        <div class="lab-title">
+          <span>交互式调参实验台</span>
+          <span class="lab-key">按 L 键开关</span>
+        </div>
+
+        <div class="preset-label">一键直达名场面</div>
+        <div class="preset-grid">
+          <button class="preset-btn" data-preset="p_1m">1M 随机噪点</button>
+          <button class="preset-btn" data-preset="p_100m">100M 悬浮三角</button>
+          <button class="preset-btn" data-preset="p_7b">7B 贴纸硬滑</button>
+          <button class="preset-btn" data-preset="p_32b">32B 膝盖反弯</button>
+          <button class="preset-btn" data-preset="p_70b">70B 物理自洽</button>
+          <button class="preset-btn" data-preset="p_cot">1T 蓝图思考</button>
+          <button class="preset-btn" data-preset="p_1t2d">1T 2D 满血</button>
+          <button class="preset-btn" data-preset="p_3d">10T 3D 世界</button>
+        </div>
+
+        <div class="lab-row">
+          <label>
+            <span>模型参数量 Params</span>
+            <strong id="val-params" style="color:#38bdf8">70.0B</strong>
+          </label>
+          <input id="sl-params" type="range" min="6.0" max="12.6" step="0.05" value="11.0" />
+        </div>
+
+        <div class="lab-row">
+          <label>
+            <span>采样温度 Temperature</span>
+            <strong id="val-temp" style="color:#f59e0b">0.70</strong>
+          </label>
+          <input id="sl-temp" type="range" min="0.0" max="2.2" step="0.05" value="0.70" />
+        </div>
+
+        <div class="lab-toggles">
+          <label class="lab-check">
+            <input id="chk-knee" type="checkbox" />
+            <span>注入 32B 翻车 Bug：膝盖往反方向弯</span>
+          </label>
+          <label class="lab-check">
+            <input id="chk-lock" type="checkbox" />
+            <span>注入 7B 贴纸 Bug：车轮与踏板锁死</span>
+          </label>
+          <label class="lab-check">
+            <input id="chk-blue" type="checkbox" />
+            <span>开启 1T 深度思考蓝图（受力与风阻透视）</span>
+          </label>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="controls">
+      <div class="controls-top">
+        <button id="btn-play" class="btn primary">播放</button>
+        <input id="scrub" type="range" min="0" max="100" step="0.05" value="0" />
+        <div id="time-label" class="time-label">0:00.0 / 1:40.0</div>
+        <button id="btn-sub" class="btn active" title="显示或隐藏中文解说字幕 (快捷键 C)">字幕 开</button>
+        <button id="btn-mute" class="btn">声音</button>
+        <button id="btn-lab" class="btn" title="手动拖动参数与注入翻车 Bug (快捷键 L)">沙盒调参</button>
+        <button id="btn-clean" class="btn" title="隐藏四角 HUD 方便录屏 (快捷键 H)">纯净画面</button>
+        <button id="btn-fs" class="btn">全屏</button>
+      </div>
+      <div class="controls-bottom">
+        <div id="stage-pills" class="stage-pills"></div>
+        <div class="meta-links">
+          <span>Space 播控 · ←/→ 逐拍 · C 字幕 · L 沙盒 · H 纯净</span>
+          <a href="./gallery.html">科普分镜画廊 ↗</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>Scaling Pelican — 1920x1080 Headless Render Host</title>
+  <style>
+    html, body { margin: 0; padding: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+    canvas { display: block; width: 1920px; height: 1080px; }
+  </style>
+</head>
+<body>
+  <canvas id="stage" width="1920" height="1080"></canvas>
+  <script type="module">
+    window.__DISABLE_AUTO_BOOT__ = true;
+    import { renderAt } from './src/main.js';
+    import { TOTAL_DURATION } from './src/beat/timeline.js';
+
+    const canvas = document.getElementById('stage');
+    const ctx = canvas.getContext('2d');
+
+    window.__renderAt = (t) => {
+      renderAt(ctx, t, null);
+      return true;
+    };
+    window.__TOTAL_DURATION = TOTAL_DURATION;
+
+    const params = new URLSearchParams(window.location.search);
+    const t = Number(params.get('t') || 0);
+    renderAt(ctx, t, null);
+    window.__READY = true;
+  </script>
+</body>
+</html>

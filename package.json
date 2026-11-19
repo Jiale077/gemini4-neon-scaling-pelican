@@ -1,0 +1,20 @@
+{
+  "name": "scaling-pelican",
+  "version": "1.0.0",
+  "description": "Gemini 4 Neon 编程实测：100秒鹈鹕骑车演化动画，结合Canvas 2D、Three.js与Web Audio；参数档位为创意示意。",
+  "type": "module",
+  "scripts": {
+    "start": "node tools/serve.mjs",
+    "serve": "node tools/serve.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jiale077/gemini4-neon-scaling-pelican.git"
+  },
+  "homepage": "https://github.com/Jiale077/gemini4-neon-scaling-pelican",
+  "keywords": ["gemini", "pelican", "scaling-law", "canvas", "threejs", "web-audio"],
+  "license": "MIT"
+}

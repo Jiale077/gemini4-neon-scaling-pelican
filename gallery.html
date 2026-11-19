@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>科普分镜画廊 · 《涌现之路》AI 尺度定律视觉实测</title>
+  <style>
+    :root {
+      --bg: #07090f;
+      --card: #0c1019;
+      --border: rgba(226, 232, 240, 0.14);
+      --muted: #94a3b8;
+      --mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 28px 32px 56px;
+      background: var(--bg);
+      color: #f1f5f9;
+      font-family: "PingFang SC", "Noto Sans SC", system-ui, sans-serif;
+      max-width: 1560px;
+      margin-inline: auto;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+    h1 { margin: 0; font-size: 26px; font-weight: 700; }
+    .intro-lead {
+      color: #cbd5e1;
+      font-size: 14px;
+      line-height: 1.65;
+      margin: 8px 0 0;
+      max-width: 780px;
+    }
+    .actions { display: flex; gap: 10px; align-items: center; }
+    .btn {
+      background: transparent;
+      color: #e2e8f0;
+      border: 1px solid var(--border);
+      padding: 7px 14px;
+      border-radius: 4px;
+      font-size: 12.5px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .btn:hover { border-color: #f8fafc; color: #fff; }
+    .btn.primary { background: #f8fafc; color: #07090f; border-color: #f8fafc; font-weight: 600; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(460px, 1fr));
+      gap: 22px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-title {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .card-param {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .card-zh {
+      font-size: 14px;
+      font-weight: 600;
+      color: #f8fafc;
+    }
+    .card-link {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 3px 8px;
+      border-radius: 3px;
+    }
+    .card-link:hover { color: #fff; border-color: #94a3b8; }
+    .card canvas {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      display: block;
+    }
+    .card-explain {
+      padding: 13px 16px 15px;
+      border-top: 1px solid var(--border);
+      display: grid;
+      gap: 6px;
+      font-size: 12.5px;
+      line-height: 1.55;
+    }
+    .exp-row {
+      color: #cbd5e1;
+    }
+    .exp-tag {
+      display: inline-block;
+      color: #94a3b8;
+      font-weight: 600;
+      margin-right: 6px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <div class="eyebrow">PELICANBENCH · 零外部素材纯代码短片 · 科普分镜导览</div>
+      <h1>《涌现之路》：一图看懂 AI 参数从 100 万到 1 万亿的变化</h1>
+      <p class="intro-lead">
+        AI 圈最著名的能力测试题是让模型“用纯代码画一只骑自行车的鹈鹕”。本作品把鹈鹕脚下的道路直接做成一条<strong>误差下降曲线（Scaling Law）</strong>——越往右模型“脑容量”越大、越往下坡走代表误差越低。每一格都能直观看到不同参数量模型的经典翻车与质变瞬间。
+      </p>
+    </div>
+    <div class="actions">
+      <button id="toggle-anim" class="btn">▶ 开启动态预览</button>
+      <a class="btn" href="./index.html?lab=1">🧪 打开沙盒调参</a>
+      <a class="btn primary" href="./index.html">▶ 播放 1:40 完整短片</a>
+    </div>
+  </header>
+
+  <div id="grid" class="grid"></div>
+
+  <script type="module">
+    window.__DISABLE_AUTO_BOOT__ = true;
+    import { STAGES } from './src/beat/timeline.js';
+    import { renderAt } from './src/main.js';
+
+    const grid = document.getElementById('grid');
+    const snapshots = [
+      {
+        param: '开场',
+        zh: '下发测试考题',
+        t: 2.3,
+        accent: '#38bdf8',
+        phenomenon: '屏幕打出基准考题「用纯代码画一只骑自行车的鹈鹕」，随后初始化 100 万随机权重进入曲线。',
+        aiPrinciple: '所有后续画面均由同一段确定性代码实时渲染，没有任何外部图片或录音，模拟模型从零收敛。',
+      },
+      ...STAGES.map((s) => ({
+        param: s.paramLabel,
+        zh: `${s.zh}（${s.paramZh}）`,
+        t: s.start + (s.end - s.start) * 0.48,
+        accent: s.accent,
+        phenomenon: s.phenomenon,
+        aiPrinciple: s.aiPrinciple,
+      })),
+      {
+        param: '相变瞬间',
+        zh: '32B → 70B 激光跨越',
+        t: 44.0,
+        accent: '#2dd4bf',
+        phenomenon: '激光扫描线切过车身：线左侧还是膝盖反弯、黄色车架的 32B，线右侧前轮已经瞬间对齐成 70B。',
+        aiPrinciple: '可视化呈现大模型中著名的「相变 / 涌现」现象：越过临界参数量后，物理与几何约束一次性接通。',
+      },
+      {
+        param: '终章',
+        zh: '七数量级全景结案',
+        t: 96.0,
+        accent: '#f59e0b',
+        phenomenon: '镜头大幅拉远露出整条误差下降曲线，6 个里程碑节点的实时微动画面同屏对比，最终得分 99.8。',
+        aiPrinciple: '从左到右回望整条 Scaling Law 曲线，直观感受“2D 量变到 3D 质变”的完整轨迹。',
+      },
+    ];
+
+    const entries = snapshots.map((item) => {
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.style.borderTop = `2px solid ${item.accent}`;
+      card.innerHTML = `
+        <div class="card-head">
+          <div class="card-title">
+            <span class="card-param" style="color:${item.accent}">${item.param}</span>
+            <span class="card-zh">${item.zh}</span>
+          </div>
+          <a class="card-link" href="./index.html?t=${item.t.toFixed(1)}">跳转 t=${item.t.toFixed(1)}s ↗</a>
+        </div>
+        <canvas width="960" height="540"></canvas>
+        <div class="card-explain">
+          <div class="exp-row"><span class="exp-tag">画面亮点</span>${item.phenomenon}</div>
+          <div class="exp-row"><span class="exp-tag">AI 原理</span>${item.aiPrinciple}</div>
+        </div>
+      `;
+      grid.appendChild(card);
+      const canvas = card.querySelector('canvas');
+      const ctx = canvas.getContext('2d');
+      return { item, ctx };
+    });
+
+    function drawAll(offset = 0) {
+      for (const { item, ctx } of entries) {
+        ctx.save();
+        ctx.scale(0.5, 0.5);
+        renderAt(ctx, item.t + offset, null, { showSubtitles: true });
+        ctx.restore();
+      }
+    }
+
+    drawAll(0);
+
+    let anim = false;
+    let t0 = 0;
+    const btn = document.getElementById('toggle-anim');
+    btn.addEventListener('click', () => {
+      anim = !anim;
+      btn.textContent = anim ? '⏸ 暂停动态预览' : '▶ 开启动态预览';
+      t0 = performance.now();
+    });
+
+    function loop(now) {
+      if (anim) {
+        const dt = ((now - t0) / 1000) % 2.4;
+        drawAll(dt - 1.2);
+      }
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>
